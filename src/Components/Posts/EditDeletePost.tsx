@@ -58,6 +58,8 @@ const EditDeletePost: React.FC<{ PostId: string }> = ({ PostId }) => {
       try {
         setLoading(true);
         const data = await myAPI(`posts/getID/${PostId}`);
+        console.log(data.id);
+        
         setPost(data);
       } catch {
         setError("Failed to fetch the post data.");

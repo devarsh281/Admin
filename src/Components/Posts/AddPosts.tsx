@@ -147,7 +147,7 @@ const AddPosts: React.FC = () => {
 
               <Select
                 value={postData?.category}
-                onValueChange={handleChange}
+                onValueChange={(value) => handleChange(value, "category")}
                 required
               >
                 <SelectTrigger>

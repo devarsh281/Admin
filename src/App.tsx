@@ -10,6 +10,7 @@ import SignUpPage from "./Components/Authentication/SignUpPage";
 import SignInPage from "./Components/Authentication/SignInPage";
 import Dashboard from "./Components/Main/Dashboard";
 import Display from "./Components/Main/Display";
+// import PostDetail from "./Components/Main/PostDetail";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="addcat" element={<AddCategory />} />
             <Route path="category" element={<Category />} />
           </Route>
+            {/* <Route path="/post/:id" element={<PostDetail/>} /> */}
         </Routes>
       </BrowserRouter>
     </div>

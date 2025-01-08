@@ -38,7 +38,6 @@ const SignInPage: React.FC = () => {
       const data = await myAPI("auth/log", "POST", JSON.stringify(signIn));
       console.log(data);
       setsignIn({ username: "", password: "" });
-      alert('Login Sucessfully')
       navigate("/dashboard/display")
     } catch {
       setError("Failed to Login.");

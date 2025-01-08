@@ -20,6 +20,7 @@ interface PostData {
   title: string;
   description: string;
   category: string;
+  image: File | null;
 }
 
 const AddPosts: React.FC = () => {
@@ -27,11 +28,13 @@ const AddPosts: React.FC = () => {
     title: "",
     description: "",
     category: "",
+    image: null,
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
+  // const [currentindex,setCurrentindex]
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -42,7 +45,6 @@ const AddPosts: React.FC = () => {
           const categoryNames = result.data.map(
             (category: { name: string }) => category.name
           );
-          console.log("Category Names:", categoryNames);
           setCategories(categoryNames);
         } else {
           console.error("Data is not an array or missing:", result);
@@ -56,21 +58,21 @@ const AddPosts: React.FC = () => {
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string,
-    field?: string
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    if (typeof e === "string") {
-      setPostData((prevData) => ({
-        ...prevData,
-        [field as string]: e,
-      }));
-    } else {
-      const { name, value } = e.target;
-      setPostData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
+    const { name, value } = e.target;
+    setPostData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    setPostData({
+      ...postData,
+      image: file,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -80,17 +82,27 @@ const AddPosts: React.FC = () => {
     setSuccess(false);
 
     try {
-      const data = await myAPI(
-        "posts/addpost",
-        "POST",
-        JSON.stringify(postData)
-      );
-      console.log(data);
+      const formData = new FormData();
+      formData.append("title", postData.title);
+      formData.append("description", postData.description);
+      formData.append("category", postData.category);
+      if (postData.image) {
+        formData.append("image", postData.image);
+      }
 
-      setSuccess(true);
-      setPostData({ title: "", description: "", category: "" });
-    } catch {
-      setError("Failed to Post Data");
+      const response = await fetch("http://localhost:8081/posts/addpost", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        setSuccess(true);
+        setPostData({ title: "", description: "", category: "", image: null });
+      } else {
+        throw new Error("Failed to submit the post");
+      }
+    } catch (error) {
+      setError("Failed to Post Data: " + (error instanceof Error ? error.message : ""));
     } finally {
       setLoading(false);
     }
@@ -100,17 +112,12 @@ const AddPosts: React.FC = () => {
     <div className="container mx-auto p-4 max-w-md">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            Add Post
-          </CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Add Post</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label
-                htmlFor="title"
-                className="text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="title" className="text-sm font-medium text-gray-700">
                 Title
               </label>
               <Input
@@ -122,11 +129,9 @@ const AddPosts: React.FC = () => {
                 required
               />
             </div>
+
             <div className="space-y-2">
-              <label
-                htmlFor="description"
-                className="text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="description" className="text-sm font-medium text-gray-700">
                 Description
               </label>
               <Textarea
@@ -137,17 +142,14 @@ const AddPosts: React.FC = () => {
                 required
               />
             </div>
+
             <div className="space-y-2">
-              <label
-                htmlFor="category"
-                className="text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="category" className="text-sm font-medium text-gray-700">
                 Category
               </label>
-
               <Select
-                value={postData?.category}
-                onValueChange={(value) => handleChange(value, "category")}
+                value={postData.category}
+                onValueChange={(value) => handleChange({ target: { name: "category", value } } as any)}
                 required
               >
                 <SelectTrigger>
@@ -162,6 +164,20 @@ const AddPosts: React.FC = () => {
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="space-y-2">
+              <label htmlFor="image" className="text-sm font-medium text-gray-700">
+                Image
+              </label>
+              <Input
+                type="file"
+                id="image"
+                name="image"
+                onChange={handleFileChange}
+                required
+              />
+            </div>
+
             <Button type="submit" disabled={loading} className="w-full">
               {loading ? "Submitting..." : "Add Post"}
             </Button>
@@ -173,11 +189,9 @@ const AddPosts: React.FC = () => {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
+
           {success && (
-            <Alert
-              variant="default"
-              className="mt-4 bg-green-50 text-green-700 border-green-200"
-            >
+            <Alert variant="default" className="mt-4 bg-green-50 text-green-700 border-green-200">
               <CheckCircle2 className="h-4 w-4" />
               <AlertDescription>Post added successfully!</AlertDescription>
             </Alert>

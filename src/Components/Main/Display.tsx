@@ -2,18 +2,31 @@
 
 import { myAPI } from '@/lib/utils'
 import React, { useEffect, useState } from 'react'
-import { Loader2 } from 'lucide-react'
+import { Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import BlogPostModal from './BlogPostModel'
 
 interface Post {
   id: number
   title: string
   description: string
+  views: number
+  date: string
+}
+
+interface Analyze {
+  total: number
 }
 
 const Display = () => {
   const [posts, setPosts] = useState<Post[]>([])
+  const [analysis, setAnalysis] = useState<Analyze | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null)
+  const postsPerPage = 6
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,67 +41,130 @@ const Display = () => {
         }
       } catch (err) {
         console.error('Error fetching posts:', err)
-        setError("Error fetching posts")
+        setError('Error fetching posts')
       } finally {
         setLoading(false)
       }
     }
 
+    const fetchAnalysis = async () => {
+      try {
+        const response = await myAPI('analysis/analytics')
+        setAnalysis(response)
+      } catch (err) {
+        console.error('Error fetching analysis:', err)
+        setError('Error fetching analysis')
+      }
+    }
+
     fetchData()
+    fetchAnalysis()
   }, [])
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="text-red-500 text-center py-4 bg-red-50 rounded-md" role="alert">
-        <span className="font-semibold">Error: </span>
-        <span>{error}</span>
-      </div>
+      <Card className="w-full">
+        <CardContent>
+          <div className="text-destructive text-center py-4" role="alert">
+            <span className="font-semibold">Error: </span>
+            <span>{error}</span>
+          </div>
+        </CardContent>
+      </Card>
     )
   }
 
   if (posts.length === 0) {
     return (
-      <div className="text-gray-500 text-center py-4 bg-gray-50 rounded-md" role="alert">
-        <span>No posts available</span>
-      </div>
+      <Card className="w-full">
+        <CardContent>
+          <div className="text-muted-foreground text-center py-4" role="alert">
+            <span>No posts available</span>
+          </div>
+        </CardContent>
+      </Card>
     )
   }
 
+  const totalBlogs = analysis && 'total' in analysis ? analysis.total : 0
+  const indexOfLastPost = currentPage * postsPerPage
+  const indexOfFirstPost = indexOfLastPost - postsPerPage
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
+  const totalPages = Math.ceil(posts.length / postsPerPage)
+
   return (
-    <div>
-        <div>
-            <p className='text-2xl font-big text-gray-600 uppercase tracking-wider'>Blogs</p>
-        </div>
-    <div className="bg-white shadow-sm rounded-lg overflow-hidden mt-5">
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Post ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {posts.map((post) => (
-              <tr key={post.id} className="hover:bg-blue-50 transition-colors duration-200">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{post.id}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{post.title}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{post.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold text-foreground">Latest Blogs</h2>
+        <p className="text-lg text-muted-foreground">
+          Total Blogs: {totalBlogs}
+        </p>
       </div>
-    </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentPosts.map((post) => (
+          <Card key={post.id} className="flex flex-col justify-between h-[300px]">
+            <CardHeader>
+              <CardTitle className="text-lg font-medium line-clamp-2">{post.title}</CardTitle>
+              <span className="text-sm text-muted-foreground text-left">{formatDate(post.date)}</span>
+            </CardHeader>
+            <CardContent className="flex-grow overflow-hidden">
+              <p className="text-muted-foreground line-clamp-4">{post.description}</p>
+            </CardContent>
+            <CardFooter className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">{post.views} views</span>
+              <Button variant="outline" size="sm" onClick={() => setSelectedPost(post)}>
+                Read More
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+
+      <div className="flex justify-center items-center space-x-2 mt-6">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <span className="text-muted-foreground">
+          Page {currentPage} of {totalPages}
+        </span>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <BlogPostModal
+        isOpen={!!selectedPost}
+        onClose={() => setSelectedPost(null)}
+        post={selectedPost}
+      />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { myAPI } from "@/lib/utils";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   Loader2,
   ChevronLeft,

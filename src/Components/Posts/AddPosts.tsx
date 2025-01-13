@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { myAPI } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface PostData {
   title: string;
@@ -34,7 +35,6 @@ const AddPosts: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
-  // const [currentindex,setCurrentindex]
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -109,95 +109,110 @@ const AddPosts: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 max-w-md">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">Add Post</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="title" className="text-sm font-medium text-gray-700">
-                Title
-              </label>
-              <Input
-                type="text"
-                id="title"
-                name="title"
-                value={postData.title}
-                onChange={handleChange}
-                required
-              />
-            </div>
+    <div className="max-h-screen max-w-md">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5,ease:"easeInOut" }}
+      >
+        <Card className="bg-gradient-to-br from-emerald-100/20 to-teal-100/20 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-t-lg">
+            <CardTitle className="text-2xl font-bold text-center">Add Post</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <motion.div className="space-y-2" whileHover={{ scale: 1.02 }}>
+                <label htmlFor="title" className="text-md font-medium text-emerald-800">
+                  Title
+                </label>
+                <Input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={postData.title}
+                  onChange={handleChange}
+                  required
+                  className="border-emerald-300 focus:border-emerald-500 focus:ring-emerald-500"
+                />
+              </motion.div>
 
-            <div className="space-y-2">
-              <label htmlFor="description" className="text-sm font-medium text-gray-700">
-                Description
-              </label>
-              <Textarea
-                id="description"
-                name="description"
-                value={postData.description}
-                onChange={handleChange}
-                required
-              />
-            </div>
+              <motion.div className="space-y-2" whileHover={{ scale: 1.02 }}>
+                <label htmlFor="description" className="text-md font-medium text-emerald-800">
+                  Description
+                </label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  value={postData.description}
+                  onChange={handleChange}
+                  required
+                  className="border-emerald-300 focus:border-emerald-500 focus:ring-emerald-500"
+                />
+              </motion.div>
 
-            <div className="space-y-2">
-              <label htmlFor="category" className="text-sm font-medium text-gray-700">
-                Category
-              </label>
-              <Select
-                value={postData.category}
-                onValueChange={(value) => handleChange({ target: { name: "category", value } } as any)}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              <motion.div className="space-y-2" whileHover={{ scale: 1.02 }}>
+                <label htmlFor="category" className="text-md font-medium text-emerald-800">
+                  Category
+                </label>
+                <Select
+                  value={postData.category}
+                  onValueChange={(value) => handleChange({ target: { name: "category", value } } as any)}
+                  required
+                >
+                  <SelectTrigger className="border-emerald-300 focus:border-emerald-500 focus:ring-emerald-500">
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </motion.div>
 
-            <div className="space-y-2">
-              <label htmlFor="image" className="text-sm font-medium text-gray-700">
-                Image
-              </label>
-              <Input
-                type="file"
-                id="image"
-                name="image"
-                onChange={handleFileChange}
-                required
-              />
-            </div>
+              <motion.div className="space-y-2" whileHover={{ scale: 1.02 }}>
+                <label htmlFor="image" className="text-md font-medium text-emerald-800">
+                  Image
+                </label>
+                <Input
+                  type="file"
+                  id="image"
+                  name="image"
+                  onChange={handleFileChange}
+                  required
+                  className="border-emerald-300 focus:border-emerald-500 focus:ring-emerald-500"
+                />
+              </motion.div>
 
-            <Button type="submit" disabled={loading} className="w-full">
-              {loading ? "Submitting..." : "Add Post"}
-            </Button>
-          </form>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white transition-all duration-300"
+                >
+                  {loading ? "Submitting..." : "Add Post"}
+                </Button>
+              </motion.div>
+            </form>
 
-          {error && (
-            <Alert variant="destructive" className="mt-4">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+            {error && (
+              <Alert variant="destructive" className="mt-4 bg-red-100 border-red-400 text-red-700">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
 
-          {success && (
-            <Alert variant="default" className="mt-4 bg-green-50 text-green-700 border-green-200">
-              <CheckCircle2 className="h-4 w-4" />
-              <AlertDescription>Post added successfully!</AlertDescription>
-            </Alert>
-          )}
-        </CardContent>
-      </Card>
+            {success && (
+              <Alert variant="default" className="mt-4 bg-emerald-100 text-emerald-700 border-emerald-300">
+                <CheckCircle2 className="h-4 w-4" />
+                <AlertDescription>Post added successfully!</AlertDescription>
+              </Alert>
+            )}
+          </CardContent>
+        </Card>
+      </motion.div>
     </div>
   );
 };

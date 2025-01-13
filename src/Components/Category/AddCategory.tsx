@@ -4,9 +4,10 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Plus } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { myAPI } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface AddCategory {
   name: string;
@@ -48,49 +49,85 @@ const AddCategory: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
-      <Card className="w-full max-w-md mx-auto overflow-hidden">
-        <CardHeader>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+    >
+      <Card className="bg-gradient-to-br from-emerald-100/20 to-teal-100/20 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-t-lg">
           <CardTitle className="text-2xl font-bold text-center">
             Add Category
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
+            <motion.div className="space-y-2" whileHover={{ scale: 1.02 }}>
+              <label
+                htmlFor="title"
+                className="text-md font-medium text-emerald-800"
+              >
+                Title
+              </label>
               <Input
                 type="text"
-                name="name"
-                placeholder="Category Name"
-                onChange={handleChange}
+                id="title"
+                name="title"
                 value={category.name}
+                onChange={handleChange}
                 required
+                className="border-emerald-300 focus:border-emerald-500 focus:ring-emerald-500"
               />
-            </div>
-            <Button type="submit">Add Category</Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white transition-all duration-300"
+                >
+                <Plus className="mr-2 h-5 w-5" /> Add Category
+              </Button>
+            </motion.div>
           </form>
 
-          {error && (
-            <Alert
-              variant="destructive"
-              className="mt-4 bg-red-100 border-red-400 text-red-700"
-            >
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          {success && (
-            <Alert
-              variant="default"
-              className="mt-4 bg-green-100 border-green-400 text-green-700"
-            >
-              <CheckCircle2 className="h-4 w-4" />
-              <AlertDescription>Category added successfully!</AlertDescription>
-            </Alert>
-          )}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Alert
+                  variant="destructive"
+                  className="mt-4 bg-red-400/20 border-red-500 text-white"
+                >
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              </motion.div>
+            )}
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Alert
+                  variant="default"
+                  className="mt-4 bg-green-400/20 border-green-500 text-white"
+                >
+                  <CheckCircle2 className="h-4 w-4" />
+                  <AlertDescription>
+                    Category added successfully!
+                  </AlertDescription>
+                </Alert>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 

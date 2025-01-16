@@ -4,10 +4,10 @@ import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
   return (
-    <div className="flex">
+    <div className="overflow-x-hidden">
       <Side />
 
-      <div className="ml-64 w-full p-5">
+      <div className="pt-16 sm:ml-64 p-5">
         <Outlet />
       </div>
     </div>

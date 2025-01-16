@@ -26,7 +26,6 @@ const EditDeleteCategory: React.FC<{ categoryId: string }> = ({
       try {
         setLoading(true);
         const data = await myAPI(`category/getcategory/${categoryId}`);
-        console.log(data.id);
         setCategory(data);
       } catch {
         setError("Failed to load data");
@@ -53,8 +52,6 @@ const EditDeleteCategory: React.FC<{ categoryId: string }> = ({
     setError(null);
     setSuccess(false);
 
-    console.log("Submitting data for category:", category);
-
     try {
       await myAPI(
         `category/updatecategory/${categoryId}`,
@@ -63,7 +60,7 @@ const EditDeleteCategory: React.FC<{ categoryId: string }> = ({
       );
       setSuccess(true);
     } catch {
-      setError("Failed to load data");
+      setError("Failed to update category");
     } finally {
       setLoading(false);
     }
@@ -71,6 +68,7 @@ const EditDeleteCategory: React.FC<{ categoryId: string }> = ({
 
   const handleDelete = async () => {
     if (!category) return;
+
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -80,7 +78,7 @@ const EditDeleteCategory: React.FC<{ categoryId: string }> = ({
       setSuccess(true);
       setCategory(null);
     } catch {
-      setError("Failed to load data");
+      setError("Failed to delete category");
     } finally {
       setLoading(false);
     }
@@ -91,22 +89,22 @@ const EditDeleteCategory: React.FC<{ categoryId: string }> = ({
   if (error) return <div className="text-red-600 py-4">Error: {error}</div>;
 
   return (
-    <div  className="p-4 bg-gradient-to-br from-emerald-100/10 to-teal-100/10 ">
-      <Card className="w-full max-w-md mx-auto overflow-hidden shadow-lg border-2 border-green-300">
-        <CardHeader className="bg-gradient-to-br from-emerald-400 to-teal-300 ">
-          <CardTitle className="text-2xl font-bold text-center text-white">
+    <div className="p-4 bg-gradient-to-br from-emerald-100/10 to-teal-100/10 max-h-screen flex items-center justify-center">
+      <Card className="w-full max-w-lg sm:max-w-2xl md:max-w-4xl mx-auto shadow-lg border-2 border-green-300">
+        <CardHeader className="bg-gradient-to-br from-emerald-400 to-teal-300">
+          <CardTitle className="text-lg md:text-xl lg:text-2xl font-bold text-center text-white">
             Edit Category
           </CardTitle>
         </CardHeader>
-        <CardContent className="bg-white p-6">
+        <CardContent className="bg-white p-4 sm:p-6 md:p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-            <label
-              htmlFor="category"
-              className="text-sm font-medium text-amber-700"
-            >
-              Category
-            </label>
+              <label
+                htmlFor="category"
+                className="block text-sm md:text-base font-medium text-amber-700"
+              >
+                Category
+              </label>
               <Input
                 type="text"
                 name="name"
@@ -114,23 +112,23 @@ const EditDeleteCategory: React.FC<{ categoryId: string }> = ({
                 aria-label="Category Name"
                 onChange={handleChange}
                 value={category ? category.name : ""}
-              className="border-2 border-emerald-300 focus:ring-2 focus:ring-orange-300 bg-amber-50 placeholder-amber-400 text-amber-800"
+                className="w-full border-2 border-emerald-300 focus:ring-2 focus:ring-orange-300 bg-amber-50 placeholder-amber-400 text-amber-800"
                 required
               />
             </div>
-            <div className="flex space-x-4">
+            <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50"
-                >
+                className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50"
+              >
                 {loading ? "Updating..." : "Update Category"}
               </Button>
               <Button
                 type="button"
                 onClick={handleDelete}
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+                className="flex-1 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50"
               >
                 <Trash2 className="mr-2" />
                 {loading ? "Deleting..." : "Delete Category"}
@@ -144,7 +142,7 @@ const EditDeleteCategory: React.FC<{ categoryId: string }> = ({
               className="mt-4 bg-green-100 border-green-400 text-green-700"
             >
               <CheckCircle2 className="h-4 w-4" />
-              <AlertDescription>successful!</AlertDescription>
+              <AlertDescription>Successful!</AlertDescription>
             </Alert>
           )}
           {error && (

@@ -25,7 +25,7 @@ const Posts = () => {
             value={PostId}
             onChange={handlePostIdChange}
             placeholder="Enter Post ID"
-            className="flex-1 border-2 border-indigo-800 bg-white placeholder-indigo-400 text-indigo-800 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-md transition duration-300 hover:shadow-lg"
+            className="flex-1 border-2 border-indigo-800 bg-white placeholder-indigo-400 text-indigo-800 py-2 px-1 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-md transition duration-300 hover:shadow-lg"
           />
           <button
             onClick={handleClearPost}

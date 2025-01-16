@@ -33,16 +33,20 @@ export const Side = () => {
 
   return (
     <div className="overflow-x-hidden">
-      <div className="fixed top-0 left-0 w-full bg-slate-800 text-gray-200 p-4 z-50">
+      <div className="fixed top-0 left-0 w-full bg-slate-800 text-gray-200 p-4 z-50 sm:hidden">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-bold bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
             Blog Management
           </h1>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="text-gray-200 focus:outline-none sm:hidden"
+            className="text-gray-200 focus:outline-none"
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
 
@@ -51,7 +55,7 @@ export const Side = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="sm:hidden mt-4 space-y-4"
+            className="mt-4 space-y-4"
           >
             <ul className="space-y-2">
               {menuItems.map((item) => (
@@ -104,7 +108,10 @@ export const Side = () => {
                 key={item.path}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 * menuItems.indexOf(item), duration: 0.5 }}
+                transition={{
+                  delay: 0.1 * menuItems.indexOf(item),
+                  duration: 0.5,
+                }}
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -143,8 +150,6 @@ export const Side = () => {
           </motion.button>
         </nav>
       </motion.div>
-
-   
     </div>
   );
 };

@@ -122,7 +122,7 @@ const EditDeletePost: React.FC<{ PostId: string }> = ({ PostId }) => {
   }
 
   return (
-    <div className="p-4 bg-gradient-to-br from-emerald-100/10 to-teal-100/10 max-h-screen flex items-center justify-center">
+    <div className="p-10 bg-gradient-to-br from-emerald-100/10 to-teal-100/10 max-h-screen flex items-center justify-center">
       <Card className="w-full max-w-4xl mx-auto shadow-lg border-2 border-green-300">
         <CardHeader className="bg-gradient-to-br from-emerald-400 to-teal-300 ">
           <CardTitle className="text-lg md:text-xl lg:text-2xl font-bold text-center text-white">

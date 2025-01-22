@@ -41,7 +41,6 @@ const SignUpPage: React.FC = () => {
       console.log(data);
 
       setsignUp({ username: "", password: "" });
-      alert("User Register Sucessfully");
       navigate("/");
     } catch {
       setError("Failed to Register User.");

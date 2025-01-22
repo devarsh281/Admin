@@ -72,7 +72,7 @@ const AddCategory: React.FC = () => {
               <Input
                 type="text"
                 id="title"
-                name="title"
+                name="name"
                 value={category.name}
                 onChange={handleChange}
                 required
@@ -115,7 +115,7 @@ const AddCategory: React.FC = () => {
               >
                 <Alert
                   variant="default"
-                  className="mt-4 bg-green-400/20 border-green-500 text-white"
+                  className="mt-4 bg-green-400/20 border-green-500 text-black"
                 >
                   <CheckCircle2 className="h-4 w-4" />
                   <AlertDescription>

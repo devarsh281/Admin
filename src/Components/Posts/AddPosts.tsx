@@ -153,7 +153,7 @@ const AddPosts: React.FC = () => {
                     toolbar: "undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | link image",
                     file_picker_types: "image",
                     images_upload_url: "http://localhost:8081/posts/upload-image",
-                    file_picker_callback: (callback, value, meta) => {
+                    file_picker_callback: (callback,_value, meta) => {
                       if (meta.filetype === "image") {
                         const input = document.createElement("input")
                         input.type = "file"

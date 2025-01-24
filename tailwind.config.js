@@ -73,6 +73,6 @@ export default {
 		},
 	  },
 	},
-	plugins: [require("tailwindcss-animate")], // Add animation plugin
+	plugins: [require("tailwindcss-animate"), require('@tailwindcss/typography')], // Add animation plugin
   }
   

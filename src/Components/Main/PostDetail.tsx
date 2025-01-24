@@ -71,7 +71,7 @@ const PostDetail: React.FC = () => {
   if (!post) {
     return <ErrorMessage message="Post not found" />;
   }
-
+  const body = post.description;
   return (
     <AnimatePresence>
       <motion.div
@@ -114,16 +114,10 @@ const PostDetail: React.FC = () => {
               className="flex flex-col md:flex-row gap-10"
             >
               <div className="flex flex-col items-center">
-                {post.image && (
-                  <img
-                    src={post.image}
-                    alt="post image"
-                    className="w-96 h-104 object-cover rounded-2xl shadow-lg transform hover:scale-105 transition-transform duration-300"
-                  />
-                )}
-                <p className="text-l text-cyan-500 bg-white/40 p-6 rounded-xl shadow-inner mt-4">
-                  {post.description}
-                </p>
+                <div
+                  dangerouslySetInnerHTML={{ __html: body }}
+                  className="text-lg text-cyan-500 bg-white/40 p-6 rounded-xl shadow-inner mt-0 mx-auto max-w-4xl text-justify"
+                ></div>
               </div>
             </motion.div>
           </CardContent>

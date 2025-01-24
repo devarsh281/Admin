@@ -1,5 +1,5 @@
 import { myAPI } from "@/lib/utils";
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Loader2,
   ChevronLeft,
@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import DOMPurify from "dompurify";
 
 interface Post {
   id: number;
@@ -57,7 +58,10 @@ const Display = () => {
       try {
         const response = await myAPI("posts/getAll");
         if (Array.isArray(response)) {
-          setPosts(response);
+          console.log(response);
+          const data = response;
+          setPosts(data);
+          console.log(data);
         } else if (response.data && Array.isArray(response.data)) {
           setPosts(response.data);
         } else {
@@ -70,7 +74,6 @@ const Display = () => {
         setLoading(false);
       }
     };
-
     const fetchAnalysis = async () => {
       try {
         const response = await myAPI("analysis/analytics");
@@ -176,7 +179,6 @@ const Display = () => {
             Total Blogs: {totalBlogs}
           </p>
         </div>
-
         {/* Search and Category Dropdown Section */}
         <div className="bg-gray-200 rounded-lg shadow-xl p-6 mb-8">
           <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
@@ -255,11 +257,15 @@ const Display = () => {
                     </div>
                   </CardHeader>
                   <CardContent className="flex-grow overflow-hidden p-4">
-                    <p className="text-gray-600 line-clamp-4">
-                      {post.description}
-                    </p>
+                    {/* Use DOMPurify to sanitize the description */}
+                    <div
+                      className="text-gray-600 line-clamp-4"
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(post.description),
+                      }}
+                    />
                   </CardContent>
-                  <CardFooter className="flex justify-between items-center  p-4">
+                  <CardFooter className="flex justify-between items-center p-4">
                     <div className="flex items-center text-gray-500">
                       <Eye className="w-4 h-4 mr-1" />
                       <span className="text-sm">{post.views} views</span>
@@ -278,7 +284,6 @@ const Display = () => {
             ))}
           </motion.div>
         )}
-
         {/* Pagination */}
         <div className="flex justify-center items-center space-x-4 mt-8">
           <Button

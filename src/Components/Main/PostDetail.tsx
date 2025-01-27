@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { FaCalendarAlt, FaFolder } from "react-icons/fa";
 
 interface Post {
@@ -73,15 +73,15 @@ const PostDetail: React.FC = () => {
   }
   const body = post.description;
   return (
-    <AnimatePresence>
+    // <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.5 }}
-        className="min-h-screen  bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 py-12 px-4 sm:px-6 lg:px-8"
+        className=" h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 py-12 px-4 sm:px-6 lg:px-8 lg:mx-0"
       >
-        <Card className="max-w-7xl  overflow-hidden shadow-2xl rounded-3xl py-12 px-4 sm:px-6 lg:px-8 border-0 bg-white/10 backdrop-blur-md bg-gradient-to-br from-cyan-100 via-indigo-200 to-blue-100">
+        <Card className="min-w-7xl overflow-hidden shadow-2xl rounded-3xl py-12 px-4 sm:px-6 lg:px-8 border-0 bg-white/10 backdrop-blur-md bg-gradient-to-br from-cyan-100 via-indigo-200 to-blue-100">
           <CardHeader className="relative py-12 px-6">
             <motion.div
               initial={{ y: -50, opacity: 0 }}
@@ -111,12 +111,12 @@ const PostDetail: React.FC = () => {
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="flex flex-col md:flex-row gap-10"
+              className="flex flex-col md:flex-row gap-10 justify-center items-center"
             >
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center w-full">
                 <div
                   dangerouslySetInnerHTML={{ __html: body }}
-                  className="text-lg text-cyan-500 bg-white/40 p-6 rounded-xl shadow-inner mt-0 mx-auto max-w-4xl text-justify"
+                  className="text-lg text-cyan-500 bg-white/40 p-6 rounded-xl shadow-inner mt-0 mx-auto w-full max-w-4xl text-justify"
                 ></div>
               </div>
             </motion.div>
@@ -135,7 +135,7 @@ const PostDetail: React.FC = () => {
           </CardFooter>
         </Card>
       </motion.div>
-    </AnimatePresence>
+    // </AnimatePresence>
   );
 };
 

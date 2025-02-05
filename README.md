@@ -1,50 +1,46 @@
-# React + TypeScript + Vite
+# Blog Management System - MERN Stack (Admin Panel Only)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the Blog Management System, a full-stack web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js). This README focuses on the Admin panel of the system, specifically the React.js application, which allows users to interact with blog posts. The backend (Express.js/Node.js) and database (MongoDB) setup will be handled separately.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### User Features:
 
-## Expanding the ESLint configuration
+- **User Registration & Login** : Users can create an account and log in to the platform to view blog posts.
+- **Search Posts** : Users can browse and search for blog posts. Each post displays the number of views it has.
+- **Like Posts** : Users can like their favorite posts.
+- **Comment on Posts** : Users can leave comments on posts they read.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Admin Features:
 
-- Configure the top-level `parserOptions` property like this:
+- **Manage Categories** : Admins can create and manage categories for blog posts.
+- **Manage Posts** : Admins have the ability to create, update, and delete posts.
+- **Analytics** : Admins can view statistics, such as the total number of posts, likes, and comments.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🛠️ Technologies Used
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- **FrontEnd** : ReactJs,Typescript
+- **Backend (for reference)** : Node.js, Express.js, MongoDB (not included in this repository)
+- **Styling** : Tailwind
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Install the required dependencies:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+npm install
+
+## Run the frontend server:
+
+npm run dev
+
+## 📥 Installation & Setup
+
+### Clone the repository
+
+To get started with the project, first, clone the repository to your local machine using Git:
+
+git clone https://github.com/devarsh281/Admin.git
+
+### 📝 Notes:
+
+**Backend Integration**: This repository contains only the frontend. The backend (Node.js + Express) and database (MongoDB) services are not included here, but they are necessary for full functionality. You will need to set up the backend separately and ensure that the frontend is connected to it using appropriate API endpoints.
+
+**Authentication**: The login and registration functionality will be connected to the backend's authentication system (e.g., JWT-based authentication). Ensure the backend server is running before trying to log in or interact with user-specific features.

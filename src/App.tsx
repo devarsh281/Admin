@@ -1,16 +1,15 @@
-// import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import AddPosts from "./Components/Posts/AddPosts";
-import Posts from "./Components/Posts/Posts";
-import AddCategory from "./Components/Category/AddCategory";
-import Category from "./Components/Category/Category";
-import SignUpPage from "./Components/Authentication/SignUpPage";
-import SignInPage from "./Components/Authentication/SignInPage";
-import Dashboard from "./Components/Main/Dashboard";
-import Display from "./Components/Main/Display";
-import PostDetail from "./Components/Main/PostDetail";
+import AddPosts from "./components/posts/AddPosts";
+import Posts from "./components/posts/Posts";
+import AddCategory from "./components/category/AddCategory";
+import Category from "./components/category/Category";
+import SignUpPage from "./components/authentication/SignUpPage";
+import SignInPage from "./components/authentication/SignInPage";
+import Dashboard from "./components/main/Dashboard";
+import Display from "./components/main/Display";
+import PostDetail from "./components/main/PostDetail";
 
 function App() {
   return (

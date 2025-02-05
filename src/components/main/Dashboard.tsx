@@ -1,4 +1,3 @@
-// import React from "react";
 import { Side } from "./Side";
 import { Outlet } from "react-router-dom";
 
@@ -15,4 +14,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-//  
+

@@ -1,4 +1,4 @@
-# Blog Management System - MERN Stack (Admin Panel Only)
+# Blog Management System - MERN Stack (Admin)
 
 Welcome to the Blog Management System, a full-stack web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js). This README focuses specifically on the **Admin panel** of the system, which is developed using React.js, and allows administrators to manage blog posts. The backend (Express.js/Node.js) and the database (MongoDB) setup will be handled separately.
 
